@@ -24,6 +24,13 @@ pipeline {
                 }
             }
         }
+        stage('Check Kubernetes') {
+            steps {
+                bat 'whoami'
+                bat 'kubectl config current-context'
+                bat 'kubectl get nodes'
+            }
+        }
 
         stage('Deploy') {
             steps {
