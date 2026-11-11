@@ -3,60 +3,23 @@ pipeline {
 
     stages {
 
-        stage('Docker Logout') {
+        stage('Build') {
             steps {
-                echo 'Clearing old Docker Hub credentials...'
-                bat 'docker logout || exit /b 0'
+                bat 'docker build -t event-app .'
             }
         }
 
-        stage('Build Docker Image') {
+        stage('Push') {
             steps {
-                echo 'Building Docker Image...'
-                bat 'docker build -t kubdemoapp:v1 .'
+                bat 'docker push harini2926/event-app:latest'
             }
         }
 
-        stage('Docker Login') {
+        stage('Deploy') {
             steps {
-                withCredentials([usernamePassword(
-                    credentialsId: 'dockerhub-credentials',
-                    usernameVariable: 'DOCKER_USERNAME',
-                    passwordVariable: 'DOCKER_PASSWORD'
-                )]) {
-                    bat 'echo %DOCKER_PASSWORD% | docker login -u %DOCKER_USERNAME% --password-stdin'
-                }
+                bat 'kubectl apply -f deployment.yaml'
+                bat 'kubectl apply -f service.yaml'
             }
-        }
-
-        stage('Push Docker Image to Docker Hub') {
-            steps {
-                echo 'Tagging Docker Image...'
-                bat 'docker tag kubdemoapp:v1 harini2926/sample2:version1'
-
-                echo 'Pushing Docker Image...'
-                bat 'docker push harini2926/sample2:version1'
-            }
-        }
-
-        stage('Deploy to Kubernetes') {
-            steps {
-                echo 'Deploying to Kubernetes...'
-
-                bat 'set KUBECONFIG=C:\\Users\\Harini\\.kube\\config && kubectl apply -f deployment.yaml --validate=false'
-
-                bat 'set KUBECONFIG=C:\\Users\\Harini\\.kube\\config && kubectl apply -f service.yaml'
-            }
-        }
-    }
-
-    post {
-        success {
-            echo 'Pipeline completed successfully!'
-        }
-
-        failure {
-            echo 'Pipeline failed. Please check the logs.'
         }
     }
 }
