@@ -10,9 +10,18 @@ pipeline {
             }
         }
 
-        stage('Push') {
+        stage('Login and Push') {
             steps {
-                bat 'docker push harini2926/event-app:latest'
+                withCredentials([usernamePassword(
+                    credentialsId: 'dockerhub-credentials',
+                    usernameVariable: 'DH_USER',
+                    passwordVariable: 'DH_PASS'
+                )]) {
+                    bat '''
+                    echo %DH_PASS% | docker login -u %DH_USER% --password-stdin
+                    docker push harini2926/event-app:latest
+                    '''
+                }
             }
         }
 
