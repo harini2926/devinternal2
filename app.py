@@ -1,53 +1,19 @@
-from flask import Flask, render_template, request, redirect, url_for
+
+from flask import Flask, render_template, request
 
 app = Flask(__name__)
 
-
-@app.route("/")
+@app.route('/')
 def home():
-    return redirect(url_for("register"))
+    return render_template('register.html')
 
-
-@app.route("/register", methods=["GET", "POST"])
+@app.route('/register', methods=['POST'])
 def register():
-    if request.method == "POST":
-        name = request.form.get("name", "").strip()
-        email = request.form.get("email", "").strip()
-        course = request.form.get("course", "").strip()
+    name = request.form['name']
+    email = request.form['email']
+    course = request.form['course']
 
-        # Validate all fields
-        if not name or not email or not course:
-            return render_template(
-                "register.html",
-                error="Please fill in all fields."
-            )
+    return render_template('success.html', name=name, email=email, course=course)
 
-        # Redirect to success page
-        return redirect(
-            url_for(
-                "success",
-                name=name,
-                email=email,
-                course=course
-            )
-        )
-
-    return render_template("register.html")
-
-
-@app.route("/success")
-def success():
-    name = request.args.get("name", "Unknown")
-    email = request.args.get("email", "Not provided")
-    course = request.args.get("course", "Not provided")
-
-    return render_template(
-        "success.html",
-        name=name,
-        email=email,
-        course=course
-    )
-
-
-if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000, debug=True)
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5000, debug=True)
