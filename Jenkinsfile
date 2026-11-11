@@ -1,3 +1,4 @@
+
 pipeline {
     agent any
 
@@ -5,7 +6,7 @@ pipeline {
 
         stage('Build') {
             steps {
-                bat 'docker build -t event-app .'
+                bat 'docker build -t harini2926/event-app:latest .'
             }
         }
 
