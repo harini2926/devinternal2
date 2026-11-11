@@ -1,31 +1,27 @@
-<!DOCTYPE html>
+
 <html>
 <head>
-    <title>Registration form</title>
+    <title>Event Registration</title>
 </head>
 <body>
 
-    <h1>Course Registration form of student</h1>
+    <h2>Event Registration Form</h2>
 
-    {% if error %}
-        <p style="color: red;">{{ error }}</p>
-    {% endif %}
+    <form action="/register" method="POST">
 
-    <form method="POST">
-
-        <label>Name:</label>
-        <input type="text" name="name">
+        Name:
+        <input type="text" name="name" required>
         <br><br>
 
-        <label>Email:</label>
-        <input type="email" name="email">
+        Email:
+        <input type="email" name="email" required>
         <br><br>
 
-        <label>Course:</label>
-        <input type="text" name="course">
+        Course:
+        <input type="text" name="course" required>
         <br><br>
 
-        <button type="submit">Register</button>
+        <input type="submit" value="Register">
 
     </form>
 
