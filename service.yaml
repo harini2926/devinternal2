@@ -1,13 +1,16 @@
 apiVersion: v1
 kind: Service
+
 metadata:
-  name: kubedemoapp-service
+  name: event-service
+
 spec:
-  selector:
-    app: kubedemoapp
-  ports:
-    - protocol: TCP
-      port: 5000
-      targetPort: 5000
-      nodePort: 30088
   type: NodePort
+
+  selector:
+    app: event
+
+  ports:
+  - port: 5000
+    targetPort: 5000
+    nodePort: 30086
