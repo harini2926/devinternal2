@@ -1,19 +1,24 @@
 apiVersion: apps/v1
 kind: Deployment
+
 metadata:
-  name: kubedemoapp-deployment
+  name: event-app
+
 spec:
-  replicas: 4
+  replicas: 2
+
   selector:
     matchLabels:
-      app: kubedemoapp
+      app: event
+
   template:
     metadata:
       labels:
-        app: kubedemoapp
+        app: event
+
     spec:
       containers:
-        - name: kubedemoapp
-          image: harini2926/sample2:version1
-          ports:
-            - containerPort: 5000
+      - name: event-app
+        image: harini2926/event-app:latest
+        ports:
+        - containerPort: 5000
